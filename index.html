@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ApexDrive — The Automotive Journal</title>
+  <meta name="description" content="ApexDrive is your definitive guide to the world of automobiles — reviews, history, and the future of driving."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0a0a;--surface:#111111;--surface2:#1a1a1a;--border:#2a2a2a;--text:#f0ece4;--muted:#888;--accent:#e8c547;--accent2:#c0392b;--font-display:'Bebas Neue',sans-serif;--font-serif:'DM Serif Display',serif;--font-body:'DM Sans',sans-serif}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;line-height:1.6;overflow-x:hidden}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:var(--font-display);font-size:2rem;letter-spacing:3px;color:var(--accent)}
+    .nav-links{display:flex;gap:2.5rem;list-style:none}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
+    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+    section{display:none}
+    section.active{display:block}
+    #home{min-height:100vh}
+    .hero{position:relative;height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:5rem 3rem;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.4) 60%,transparent 100%),url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=80') center/cover no-repeat;animation:heroZoom 20s ease-in-out infinite alternate}
+    @keyframes heroZoom{from{transform:scale(1)}to{transform:scale(1.05)}}
+    .hero-tag{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;position:relative;animation:fadeUp .8s ease both}
+    .hero h1{font-family:var(--font-display);font-size:clamp(4rem,12vw,9rem);line-height:.9;letter-spacing:2px;position:relative;animation:fadeUp .9s ease .15s both}
+    .hero h1 span{color:var(--accent)}
+    .hero-sub{margin-top:1.5rem;max-width:500px;color:var(--muted);font-size:1rem;position:relative;animation:fadeUp .9s ease .3s both}
+    .hero-cta{margin-top:2.5rem;display:flex;gap:1rem;position:relative;animation:fadeUp .9s ease .45s both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .btn{display:inline-block;padding:.8rem 2rem;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .3s}
+    .btn-primary{background:var(--accent);color:#000;font-weight:500}
+    .btn-primary:hover{background:#fff}
+    .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .btn-outline:hover{border-color:var(--text)}
+    .featured-strip{background:var(--accent);color:#000;padding:.6rem 3rem;display:flex;align-items:center;gap:3rem;overflow:hidden}
+    .strip-label{font-family:var(--font-display);letter-spacing:3px;font-size:.9rem;white-space:nowrap}
+    .strip-ticker{display:flex;gap:4rem;animation:ticker 20s linear infinite;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:500}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .section-header{padding:4rem 3rem 2rem;display:flex;justify-content:space-between;align-items:flex-end}
+    .section-header h2{font-family:var(--font-display);font-size:3rem;letter-spacing:2px}
+    .section-header a{color:var(--accent);font-size:.75rem;letter-spacing:2px;text-decoration:none;text-transform:uppercase}
+    .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:0 3rem 4rem}
+    .card{background:var(--surface);overflow:hidden;cursor:pointer;transition:background .3s;position:relative}
+    .card:hover{background:var(--surface2)}
+    .card-img{height:200px;overflow:hidden}
+    .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+    .card:hover .card-img img{transform:scale(1.05)}
+    .card-body{padding:1.5rem}
+    .card-tag{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+    .card h3{font-family:var(--font-serif);font-size:1.2rem;margin-bottom:.5rem}
+    .card p{color:var(--muted);font-size:.85rem;line-height:1.5}
+    .card-meta{padding:1rem 1.5rem;border-top:1px solid var(--border);font-size:.7rem;letter-spacing:1px;color:var(--muted);display:flex;justify-content:space-between}
+    #about{min-height:100vh;padding-top:80px}
+    .about-hero{height:45vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:3rem}
+    .about-hero-bg{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.9) 40%,transparent),url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1400&q=80') center/cover}
+    .about-hero h1{font-family:var(--font-display);font-size:5rem;letter-spacing:3px;position:relative}
+    .about-hero h1 em{color:var(--accent);font-style:normal}
+    .about-content{display:grid;grid-template-columns:1fr 1fr;gap:5rem;padding:5rem 3rem}
+    .about-content h2{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:1.5rem}
+    .about-content p{color:var(--muted);margin-bottom:1rem;line-height:1.8}
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:0 3rem 4rem}
+    .stat-box{background:var(--surface);padding:2.5rem;text-align:center}
+    .stat-box .num{font-family:var(--font-display);font-size:4rem;color:var(--accent);line-height:1}
+    .stat-box .label{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:.5rem}
+    #blog{min-height:100vh;padding-top:80px}
+    .blog-header{padding:5rem 3rem 3rem;border-bottom:1px solid var(--border)}
+    .blog-header h1{font-family:var(--font-display);font-size:5rem;letter-spacing:3px}
+    .blog-header p{color:var(--muted);margin-top:1rem;max-width:500px}
+    .blog-featured{display:grid;grid-template-columns:1fr 1fr;margin:0;border-bottom:1px solid var(--border)}
+    .blog-feat-img{height:500px;overflow:hidden}
+    .blog-feat-img img{width:100%;height:100%;object-fit:cover}
+    .blog-feat-body{padding:4rem;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--border)}
+    .blog-feat-body .tag{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem}
+    .blog-feat-body h2{font-family:var(--font-serif);font-size:2.2rem;line-height:1.2;margin-bottom:1.5rem}
+    .blog-feat-body p{color:var(--muted);line-height:1.8;margin-bottom:2rem}
+    .blog-feat-body .meta{font-size:.7rem;letter-spacing:1px;color:var(--muted)}
+    .article-view{display:none;padding-top:80px}
+    .article-view.open{display:block}
+    .article-hero-img{height:55vh;overflow:hidden}
+    .article-hero-img img{width:100%;height:100%;object-fit:cover}
+    .article-body{max-width:740px;margin:0 auto;padding:4rem 1.5rem}
+    .article-body .tag{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+    .article-body h1{font-family:var(--font-serif);font-size:2.8rem;line-height:1.2;margin-bottom:2rem}
+    .article-body .meta{font-size:.75rem;color:var(--muted);margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+    .article-body p{color:#c8c4bc;line-height:1.9;margin-bottom:1.5rem}
+    .article-body h2{font-family:var(--font-serif);font-size:1.6rem;margin:2.5rem 0 1rem}
+    .article-body a{color:var(--accent);text-decoration:underline}
+    .article-body blockquote{border-left:3px solid var(--accent);padding-left:1.5rem;margin:2rem 0;color:var(--muted);font-style:italic;font-family:var(--font-serif);font-size:1.2rem}
+    .back-btn{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 3rem;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;background:none;transition:color .3s}
+    .back-btn:hover{color:var(--text)}
+    .blog-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);margin-top:1px}
+    footer{border-top:1px solid var(--border);padding:4rem 3rem 2rem;display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem}
+    footer .footer-brand .logo{font-family:var(--font-display);font-size:2.5rem;color:var(--accent);letter-spacing:3px}
+    footer .footer-brand p{color:var(--muted);font-size:.85rem;margin-top:1rem;max-width:280px}
+    footer h4{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+    footer ul{list-style:none}
+    footer ul li{margin-bottom:.5rem}
+    footer ul li a{color:var(--text);font-size:.85rem;text-decoration:none;transition:color .3s}
+    footer ul li a:hover{color:var(--accent)}
+    .footer-bottom{padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);font-size:.7rem;letter-spacing:1px;color:var(--muted)}
+    @media(max-width:768px){nav{padding:1rem 1.5rem}.nav-links{gap:1.2rem}.nav-links a{font-size:.65rem}.hero{padding:3rem 1.5rem}.hero h1{font-size:4rem}.cards-grid{grid-template-columns:1fr;margin:0 1.5rem 3rem}.section-header{padding:3rem 1.5rem 1.5rem}.about-content{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}.stats-row{grid-template-columns:1fr;margin:0 1.5rem 3rem}.blog-featured{grid-template-columns:1fr}.blog-feat-img{height:280px}.blog-feat-body{padding:2rem 1.5rem;border-left:none;border-top:1px solid var(--border)}.blog-list{grid-template-columns:1fr}footer{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem 2rem}.footer-bottom{flex-direction:column;gap:.5rem;padding:1.5rem}}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">APEXDRIVE</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showSection('home')" class="active" id="nav-home">Home</a></li>
+    <li><a href="#" onclick="showSection('about')" id="nav-about">About</a></li>
+    <li><a href="#" onclick="showSection('blog')" id="nav-blog">Blog</a></li>
+  </ul>
+</nav>
+
+<section id="home" class="active">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-tag">// The Automotive Journal</div>
+    <h1>BUILT FOR<br><span>SPEED.</span><br>WRITTEN<br>FOR SOULS.</h1>
+    <p class="hero-sub">Deep-dive reviews, rich history, and honest takes on everything four-wheeled and fearless.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#" onclick="showSection('blog')">Read Latest</a>
+      <a class="btn btn-outline" href="#" onclick="showSection('about')">About Us</a>
+    </div>
+  </div>
+  <div class="featured-strip">
+    <span class="strip-label">NOW</span>
+    <div class="strip-ticker">
+      <span>Ferrari SF90 Review</span><span>Electric Era: Is ICE Dead?</span><span>Top 10 JDM Legends</span><span>F1 2025 Season Preview</span><span>Porsche 911 GT3 RS Deep Dive</span>
+      <span>Ferrari SF90 Review</span><span>Electric Era: Is ICE Dead?</span><span>Top 10 JDM Legends</span><span>F1 2025 Season Preview</span><span>Porsche 911 GT3 RS Deep Dive</span>
+    </div>
+  </div>
+  <div class="section-header">
+    <h2>LATEST STORIES</h2>
+    <a href="#" onclick="showSection('blog')">View All →</a>
+  </div>
+  <div class="cards-grid">
+    <div class="card" onclick="openArticle('art1')">
+      <div class="card-img"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80" alt="Ferrari SF90"></div>
+      <div class="card-body"><div class="card-tag">Review</div><h3>Ferrari SF90 Stradale: The Hybrid That Bites</h3><p>Over 1,000 horsepower, a plug-in hybrid system, and a price tag that demands respect.</p></div>
+      <div class="card-meta"><span>June 2025</span><span>8 min read</span></div>
+    </div>
+    <div class="card" onclick="openArticle('art2')">
+      <div class="card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="EV Future"></div>
+      <div class="card-body"><div class="card-tag">Opinion</div><h3>Is the Internal Combustion Engine Truly Dead?</h3><p>With EV mandates sweeping the globe, we ask the hard question — and the answer might surprise you.</p></div>
+      <div class="card-meta"><span>May 2025</span><span>6 min read</span></div>
+    </div>
+    <div class="card" onclick="showSection('blog')">
+      <div class="card-img"><img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&q=80" alt="JDM Cars"></div>
+      <div class="card-body"><div class="card-tag">History</div><h3>The Golden Age of JDM: When Japan Ruled the Road</h3><p>Skylines, Supras, NSXs — revisiting the decade that produced some of the greatest cars ever made.</p></div>
+      <div class="card-meta"><span>April 2025</span><span>10 min read</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-hero">
+    <div class="about-hero-bg"></div>
+    <h1>OUR <em>PASSION</em><br>YOUR DRIVE</h1>
+  </div>
+  <div class="about-content">
+    <div>
+      <h2>We Live and Breathe Automobiles</h2>
+      <p>ApexDrive was born in a garage — literally. Founded by a group of automotive journalists, engineers, and weekend racers who believed the world needed a publication that respected both the machine and the human behind the wheel.</p>
+      <p>We don't chase clicks. We chase corners. Our reviews are honest, our histories are thorough, and our opinions are backed by seat time, not press releases.</p>
+      <p>Whether you're a first-time buyer or a seasoned enthusiast — ApexDrive is your co-pilot.</p>
+      <a class="btn btn-primary" href="#" onclick="showSection('blog')" style="margin-top:1.5rem;display:inline-block;">Read Our Work</a>
+    </div>
+    <div>
+      <h2>What We Cover</h2>
+      <p><strong style="color:var(--accent)">In-Depth Reviews</strong><br>We borrow cars, buy cars, and sometimes break cars. Every review starts with real driving on real roads.</p>
+      <p><strong style="color:var(--accent)">Automotive History</strong><br>From the first horseless carriage to the hypercar wars of the 2020s.</p>
+      <p><strong style="color:var(--accent)">Industry Opinion</strong><br>EV mandates, emission regulations, the death of the manual — we take sides.</p>
+      <p><strong style="color:var(--accent)">Buyer's Guides</strong><br>Practical, jargon-free guides for every budget and lifestyle.</p>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="num">120+</div><div class="label">Cars Reviewed</div></div>
+    <div class="stat-box"><div class="num">48K</div><div class="label">Monthly Readers</div></div>
+    <div class="stat-box"><div class="num">7</div><div class="label">Years Publishing</div></div>
+  </div>
+</section>
+
+<section id="blog">
+  <div class="article-view" id="article-art1">
+    <button class="back-btn" onclick="closeArticle()">← Back to Blog</button>
+    <div class="article-hero-img"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1400&q=80" alt="Ferrari SF90"></div>
+    <div class="article-body">
+      <div class="tag">Review · Supercars</div>
+      <h1>Ferrari SF90 Stradale: The Hybrid That Bites</h1>
+      <div class="meta">By Deepesh R. &nbsp;·&nbsp; June 12, 2025 &nbsp;·&nbsp; 8 min read</div>
+      <p>There is a moment, somewhere around 160 km/h on a private airstrip outside Maranello, when the Ferrari SF90 Stradale stops feeling like a car and starts feeling like a philosophical argument. You are being propelled by 1,000 horsepower — 769 from a twin-turbocharged V8 and an additional 220 from three electric motors.</p>
+      <blockquote>"Ferrari didn't build a hybrid. They built a weapon and then gave it a conscience."</blockquote>
+      <h2>The Powertrain: Science Fiction Made Steel</h2>
+      <p>The SF90 uses Ferrari's PHEV setup. The internal combustion engine drives the rear wheels through an 8-speed dual-clutch gearbox, while two electric motors power the front axle independently — making it Ferrari's first all-wheel-drive road car. A third electric motor sits between the engine and gearbox, acting as torque-fill and starter motor.</p>
+      <p>On electric power alone, the SF90 can travel up to 25 km at speeds up to 135 km/h.</p>
+      <h2>On the Road: Fast Doesn't Cover It</h2>
+      <p>The 0–100 km/h sprint takes 2.5 seconds — alongside the Bugatti Chiron and Rimac Nevera. Yet it feels different from both: more aggressive on turn-in than the Bugatti, more mechanical in feedback than the all-electric Rimac.</p>
+      <p>For a deeper comparison with rival hypercars, see <a href="https://www.topgear.com" target="_blank" rel="noopener">Top Gear's hypercar feature</a>.</p>
+      <h2>Should You Buy One?</h2>
+      <p>At roughly ₹7.5 crore ex-showroom, the SF90 is not a rational purchase. But it is Ferrari's statement that electrification does not mean the death of driving — possibly the most important supercar of this decade.</p>
+      <p>Check out our <a href="#" onclick="closeArticle()">other articles on the Blog page</a>.</p>
+    </div>
+  </div>
+
+  <div class="article-view" id="article-art2">
+    <button class="back-btn" onclick="closeArticle()">← Back to Blog</button>
+    <div class="article-hero-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80" alt="Electric Vehicles"></div>
+    <div class="article-body">
+      <div class="tag">Opinion · Electric Vehicles</div>
+      <h1>Is the Internal Combustion Engine Truly Dead?</h1>
+      <div class="meta">By Deepesh R. &nbsp;·&nbsp; May 28, 2025 &nbsp;·&nbsp; 6 min read</div>
+      <p>Every few months, a new headline announces the death of the internal combustion engine. The EU wants to ban new petrol and diesel cars by 2035. California follows. China electrifies at pace. And yet — the ICE refuses to die quietly. Global car sales in 2024 showed EVs still account for less than 20% of new vehicles sold worldwide.</p>
+      <blockquote>"The ICE isn't dying. It's being slowly, deliberately, and somewhat unfairly defunded."</blockquote>
+      <h2>The Case Against the Eulogy</h2>
+      <p>Internal combustion engines have improved dramatically. Modern turbocharged units produce less CO₂ per kilometer than equivalents from 2005. A 2025 Honda Civic's 1.5-litre turbo is arguably more sophisticated than some early EV powertrains.</p>
+      <p>Furthermore, in countries where the grid is coal-heavy — including large parts of India, where <a href="https://www.iea.org/countries/india" target="_blank" rel="noopener">the IEA estimates coal still generates over 70% of electricity</a> — an EV charged overnight may have a larger carbon footprint than a modern petrol hybrid.</p>
+      <h2>The Emotional Argument</h2>
+      <p>There is something data doesn't capture: the sound, the smell, the tactile experience. The howl of a naturally aspirated V8 at 8,000 RPM is information, drama, and joy. Electric cars are fast — many are brilliant — but they are emotionally quieter.</p>
+      <p>The ICE will recede into niches, and in those niches it will be cherished. Like vinyl records, it may survive precisely because people love it too much to let go.</p>
+      <p>Browse our <a href="#" onclick="closeArticle()">full blog archive</a> for more deep dives.</p>
+    </div>
+  </div>
+
+  <div id="blog-main">
+    <div class="blog-header">
+      <h1>THE BLOG</h1>
+      <p>Long reads, honest reviews, and the stories behind the machines.</p>
+    </div>
+    <div class="blog-featured">
+      <div class="blog-feat-img"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80" alt="Ferrari"></div>
+      <div class="blog-feat-body">
+        <div class="tag">Featured · Review</div>
+        <h2>Ferrari SF90 Stradale: The Hybrid That Bites</h2>
+        <p>Over 1,000 horsepower, a plug-in hybrid system, and a price tag that demands respect. We drive Italy's wildest road car.</p>
+        <div class="meta">June 12, 2025 &nbsp;·&nbsp; 8 min read</div><br>
+        <a class="btn btn-primary" href="#" onclick="openArticle('art1')">Read Article</a>
+      </div>
+    </div>
+    <div class="blog-list">
+      <div class="card" onclick="openArticle('art2')">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="EV"></div>
+        <div class="card-body"><div class="card-tag">Opinion · Electric Vehicles</div><h3>Is the Internal Combustion Engine Truly Dead?</h3><p>With EV mandates sweeping the globe, we ask the hard question.</p></div>
+        <div class="card-meta"><span>May 28, 2025</span><span>6 min read</span></div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&q=80" alt="JDM"></div>
+        <div class="card-body"><div class="card-tag">History · JDM</div><h3>The Golden Age of JDM: When Japan Ruled the Road</h3><p>Skylines, Supras, NSXs — revisiting the decade that produced the greatest cars ever made.</p></div>
+        <div class="card-meta"><span>April 14, 2025</span><span>10 min read</span></div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1621993202941-2e11f48ba6e5?w=600&q=80" alt="Porsche"></div>
+        <div class="card-body"><div class="card-tag">Review · Track Cars</div><h3>Porsche 911 GT3 RS: The Road-Legal Race Car</h3><p>Four litres, naturally aspirated, no turbo. In 2025, that is either rebellion or a love letter.</p></div>
+        <div class="card-meta"><span>March 5, 2025</span><span>7 min read</span></div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1541443131876-96c1c3ea6173?w=600&q=80" alt="Budget Cars"></div>
+        <div class="card-body"><div class="card-tag">Buyer's Guide</div><h3>The Best Cars Under ₹15 Lakh in 2025</h3><p>Our definitive guide to the most rewarding affordable cars on sale in India right now.</p></div>
+        <div class="card-meta"><span>Feb 20, 2025</span><span>9 min read</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <div class="logo">APEXDRIVE</div>
+    <p>The Automotive Journal. Honest, passionate, obsessive writing about cars for people who actually care.</p>
+  </div>
+  <div>
+    <h4>Navigate</h4>
+    <ul>
+      <li><a href="#" onclick="showSection('home')">Home</a></li>
+      <li><a href="#" onclick="showSection('about')">About</a></li>
+      <li><a href="#" onclick="showSection('blog')">Blog</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Topics</h4>
+    <ul>
+      <li><a href="#">Reviews</a></li>
+      <li><a href="#">Electric Vehicles</a></li>
+      <li><a href="#">Motorsport</a></li>
+      <li><a href="#">Buyer's Guides</a></li>
+      <li><a href="#">History</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2025 ApexDrive Automotive Journal</span>
+  <span>Made for BBA Digital Marketing Assignment</span>
+</div>
+
+<script>
+  function showSection(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));document.getElementById('nav-'+id).classList.add('active');if(id==='blog')closeArticle();window.scrollTo(0,0);return false}
+  function openArticle(artId){document.getElementById('blog-main').style.display='none';document.querySelectorAll('.article-view').forEach(a=>a.classList.remove('open'));document.getElementById('article-'+artId).classList.add('open');showSection('blog');document.getElementById('blog-main').style.display='none';window.scrollTo(0,0)}
+  function closeArticle(){document.querySelectorAll('.article-view').forEach(a=>a.classList.remove('open'));document.getElementById('blog-main').style.display='';window.scrollTo(0,0)}
+</script>
+</body>
+</html>
